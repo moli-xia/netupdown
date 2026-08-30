@@ -23,18 +23,6 @@ Go 1.25+ · Gin · GORM · SQLite（默认）· html/template 主题引擎 · Ta
 
 完整开发文档见 [docs/](docs/README.md)。
 
-## Pico 图片查看器
-
-本仓库同时包含 `Apps/pico`：一个独立的 Windows 本地图片查看、编辑与截图工具。Pico 的前端资源会嵌入单个 `Pico.exe`，支持图片导入、分类图库、编辑/标注、屏幕截图、格式转换，以及 PSD/PSB、PDF 兼容 AI、DWG 的本地预览。Pico 的详细功能、格式边界和第三方许可说明见 [Apps/pico/README.md](Apps/pico/README.md)。
-
-在 Windows 上构建 Pico：
-
-```powershell
-.\Apps\pico\build-pico.ps1
-```
-
-输出文件为 `bin/Pico.exe`。可从 [Releases](https://github.com/moli-xia/netupdown/releases) 下载最新的 Pico Windows 版本。
-
 ## 当前实现
 
 项目已具备可运行的首个开发版本：
