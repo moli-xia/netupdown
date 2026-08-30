@@ -1,0 +1,57 @@
+{{define "content"}}
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span>/</span><a href="/apps">产品中心</a><span>/</span><a href="/apps/{{.App.Slug}}">{{.App.Name}}</a><span>/</span><b>历史版本</b></nav>
+    <div class="page-head-row">
+      <div class="page-head-app">
+        {{if .App.Icon}}<img class="app-icon" src="{{.App.Icon}}" alt="" width="34" height="34">{{else}}<span class="app-icon">{{initial .App.Name}}</span>{{end}}
+        <h1>{{.App.Name}} 的历史版本</h1>
+      </div>
+      <span class="page-count">共 <b>{{len .Releases}}</b> 个版本</span>
+    </div>
+  </div>
+</section>
+
+<section class="section-list">
+  <div class="container container-narrow">
+    {{if .Releases}}
+    <div class="card-list">
+      {{range $i, $rel := .Releases}}
+      <article class="rel-item">
+        <header class="rel-head">
+          <h2 class="mono">v{{$rel.Version}}</h2>
+          {{if eq $i 0}}<span class="badge badge-self">最新</span>{{end}}
+          {{if ne $rel.Channel 1}}<span class="badge badge-warn">{{channelName $rel.Channel}}</span>{{end}}
+          <span class="rel-date">{{date $rel.PublishedAt}}</span>
+        </header>
+        {{with $rel.Title}}<p class="release-title">{{.}}</p>{{end}}
+        {{if $rel.Changelog}}
+        <details class="rel-log"{{if eq $i 0}} open{{end}}>
+          <summary>更新说明</summary>
+          <div class="prose">{{markdown $rel.Changelog}}</div>
+        </details>
+        {{end}}
+        {{if $rel.Assets}}
+        <div class="rel-assets">
+          {{range $rel.Assets}}
+          <div class="rel-asset">
+            <span class="asset-os">{{osIcon .OS}}</span>
+            <span class="rel-asset-name">{{.Name}}</span>
+            <span class="muted mono">{{formatBytes .Size}}</span>
+            <a class="btn btn-sm" href="/d/{{.ID}}">下载</a>
+          </div>
+          {{end}}
+        </div>
+        {{end}}
+      </article>
+      {{end}}
+    </div>
+    {{else}}
+    <div class="empty">
+      <p>暂无历史版本</p>
+      <a class="btn btn-sm" href="/apps/{{.App.Slug}}">返回产品页</a>
+    </div>
+    {{end}}
+  </div>
+</section>
+{{end}}

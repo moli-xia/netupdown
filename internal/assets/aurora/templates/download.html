@@ -1,0 +1,21 @@
+{{define "content"}}
+<section class="landing">
+  <div class="landing-card panel">
+    <a class="landing-app" href="/apps/{{.App.Slug}}">
+      {{if .App.Icon}}<img class="app-icon" src="{{.App.Icon}}" alt="" width="44" height="44">{{else}}<span class="app-icon">{{initial .App.Name}}</span>{{end}}
+      <span class="landing-app-name"><strong>{{.App.Name}}</strong><small class="muted">{{.Asset.Name}} · {{formatBytes .Asset.Size}}</small></span>
+    </a>
+    <p class="landing-source">外部网盘下载 · 来源：<b>{{.Source.Name}}</b></p>
+    <div class="code-box">
+      <span class="code-label">提取码</span>
+      <span class="code">{{.Source.ExtractCode}}</span>
+    </div>
+    <div class="landing-actions">
+      <button class="btn" type="button" data-copy="{{.Source.ExtractCode}}"><span data-copy-label>复制提取码</span></button>
+      <a class="btn btn-primary" href="{{.Source.ExternalURL}}" target="_blank" rel="noopener nofollow">前往 {{.Source.Name}} ↗</a>
+    </div>
+    <p class="landing-note">你即将前往第三方网站，请留意文件来源{{if .Asset.SHA256}}，并核对 SHA256：<code class="hash">{{.Asset.SHA256}}</code>{{end}}。</p>
+    <a class="landing-back" href="/apps/{{.App.Slug}}">← 返回产品页</a>
+  </div>
+</section>
+{{end}}

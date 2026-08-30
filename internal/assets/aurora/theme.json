@@ -1,0 +1,13 @@
+{
+  "id": "aurora",
+  "name": "Aurora 简约",
+  "version": "3.2.1",
+  "author": "NetUpDown",
+  "homepage": "https://netupdown.com",
+  "description": "内置默认主题：面向自研产品发布的精致展示体验，亮暗双模式，信息密度友好",
+  "min_app_version": "0.1.0",
+  "settings": [
+    { "key": "accent", "label": "主色", "type": "color", "default": "#2f6feb" },
+    { "key": "show_dev_band", "label": "显示更新 API 引导条", "type": "switch", "default": true }
+  ]
+}

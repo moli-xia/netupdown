@@ -1,0 +1,142 @@
+{{define "content"}}
+{{if .Preview}}<div class="preview-banner"><span>预览模式</span>这是一条仅管理员可见的预览链接，页面内容可能尚未发布。</div>{{end}}
+
+<section class="detail-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="面包屑">
+      <a href="/">首页</a><span>/</span><a href="/apps">产品中心</a>
+      {{with .App.Category}}<span>/</span><a href="/categories/{{.Slug}}">{{.Name}}</a>{{end}}
+      <span>/</span><b>{{.App.Name}}</b>
+    </nav>
+    <div class="detail-top">
+      {{if .App.Icon}}<img class="detail-icon" src="{{.App.Icon}}" alt="{{.App.Name}} 图标" width="72" height="72">{{else}}<span class="detail-icon">{{initial .App.Name}}</span>{{end}}
+      <div class="detail-title">
+        <h1>{{.App.Name}}</h1>
+        <div class="detail-badges">
+          {{if eq .App.Type 1}}<span class="badge badge-self">官方出品</span>{{end}}
+          {{with .App.License}}<span class="badge">{{.}}</span>{{end}}
+          {{if .Release}}<span class="badge mono">v{{.Release.Version}}</span>{{if ne .Release.Channel 1}}<span class="badge badge-warn">{{channelName .Release.Channel}}</span>{{end}}{{end}}
+        </div>
+        {{with .App.Tagline}}<p class="detail-tagline">{{.}}</p>{{end}}
+        <div class="detail-meta">
+          {{with .App.Developer}}<span>{{.}}</span>{{end}}
+          {{if .App.Platforms}}<span class="plats">{{range .App.Platforms}}{{osIcon .}}{{end}}</span>{{end}}
+          {{if .Release}}<span>更新于 {{date .Release.PublishedAt}}</span>{{end}}
+          <span>下载 <b>{{numFmt .App.DownloadCount}}</b></span>
+          <span>浏览 <b>{{numFmt .App.ViewCount}}</b></span>
+          <span><b>{{len .Assets}}</b> 个文件</span>
+        </div>
+        <div class="actions">
+          {{if .PrimaryAsset}}
+          <a class="btn btn-primary btn-lg" href="/d/{{.PrimaryAsset.ID}}">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0 4.5-4.5M12 15l-4.5-4.5M4.5 19.5h15"/></svg>
+            <span>立即下载<small>{{osName .PrimaryAsset.OS}} · {{formatBytes .PrimaryAsset.Size}}</small></span>
+          </a>
+          <a class="btn" href="#files">全部文件与下载源</a>
+          {{end}}
+          {{with .App.OfficialURL}}<a class="btn" href="{{.}}" target="_blank" rel="noopener nofollow">官方网站 ↗</a>{{end}}
+          {{with .App.RepoURL}}<a class="btn" href="{{.}}" target="_blank" rel="noopener">源代码 ↗</a>{{end}}
+          <a class="btn" href="/apps/{{.App.Slug}}/releases">历史版本</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{if .App.Screenshots}}
+<section class="shots-section">
+  <div class="container">
+    <div class="shots" role="list">
+      {{range .App.Screenshots}}<button class="shot" type="button" role="listitem" data-full="{{.}}" aria-label="查看大图"><img src="{{.}}" alt="{{$.App.Name}} 截图" loading="lazy"></button>{{end}}
+    </div>
+  </div>
+</section>
+<dialog class="lightbox" id="lightbox"><button class="lightbox-close" type="button" data-close aria-label="关闭"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></svg></button><img src="" alt="截图大图"></dialog>
+{{end}}
+
+<div class="container content-grid">
+  <main class="content-main">
+    {{if .App.Description}}
+    <section class="panel">
+      <div class="panel-label"><span></span>产品详情</div>
+      <div class="prose">{{markdown .App.Description}}</div>
+    </section>
+    {{end}}
+    {{if .Release}}
+    <section class="panel">
+      <div class="panel-head">
+        <h2 class="panel-title">更新日志 <span class="mono panel-title-sub">v{{.Release.Version}}</span></h2>
+        <span class="muted mono">{{date .Release.PublishedAt}}</span>
+      </div>
+      {{with .Release.Title}}<p class="release-title">{{.}}</p>{{end}}
+      {{if .Release.Changelog}}<div class="prose">{{markdown .Release.Changelog}}</div>{{else}}<p class="muted">本版本未附更新说明。</p>{{end}}
+      <a class="panel-more" href="/apps/{{.App.Slug}}/releases">查看全部历史版本 →</a>
+    </section>
+    {{end}}
+  </main>
+
+  <aside class="content-aside">
+    <section class="panel" id="files">
+      <h2 class="panel-title">下载文件</h2>
+      {{range .Assets}}{{$a := .}}
+      <article class="asset">
+        <header class="asset-head">
+          <span class="asset-os">{{osIcon .OS}}</span>
+          <div class="asset-name"><strong>{{.Name}}</strong><span class="muted mono">{{formatBytes .Size}}</span></div>
+        </header>
+        <div class="asset-chips">
+          <span class="chip">{{osName .OS}}</span>
+          {{with .Arch}}<span class="chip">{{archName .}}</span>{{end}}
+          <span class="chip">{{kindName .Kind}}</span>
+        </div>
+        {{if .SHA256}}
+        <details class="asset-hash">
+          <summary>SHA256 校验值</summary>
+          <div class="hash-row"><code class="hash">{{.SHA256}}</code><button class="chip-btn" type="button" data-copy="{{.SHA256}}"><span data-copy-label>复制</span></button><a class="chip-btn" href="https://www.virustotal.com/gui/file/{{.SHA256}}" target="_blank" rel="noopener nofollow">VirusTotal</a></div>
+        </details>
+        {{end}}
+        <div class="sources">
+          {{range $i, $src := .Sources}}
+          <a class="btn {{if eq $i 0}}btn-primary {{end}}btn-sm btn-block" href="/d/{{$a.ID}}?source={{$src.ID}}">
+            {{if eq $src.SourceType 1}}<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0 4.5-4.5M12 15l-4.5-4.5M4.5 19.5h15"/></svg>{{else}}<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4 10 14M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"/></svg>{{end}}
+            {{$src.Name}}{{with $src.ExtractCode}}<span class="src-code">码 {{.}}</span>{{end}}
+          </a>
+          {{end}}
+          {{if not .Sources}}<span class="muted">暂无可用下载源</span>{{end}}
+        </div>
+      </article>
+      {{else}}
+      <p class="muted">当前版本还没有可下载的文件。</p>
+      {{end}}
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">产品信息</h2>
+      <dl class="info-list">
+        {{with .App.Developer}}<div><dt>开发者</dt><dd>{{.}}</dd></div>{{end}}
+        {{with .App.License}}<div><dt>许可证</dt><dd>{{.}}</dd></div>{{end}}
+        {{with .App.Category}}<div><dt>分类</dt><dd><a href="/categories/{{.Slug}}">{{.Name}}</a></dd></div>{{end}}
+        <div><dt>支持平台</dt><dd class="plats">{{range .App.Platforms}}{{osIcon .}}{{end}}</dd></div>
+        {{with .App.OfficialURL}}<div><dt>官方网站</dt><dd><a href="{{.}}" target="_blank" rel="noopener nofollow">访问 ↗</a></dd></div>{{end}}
+        {{with .App.RepoURL}}<div><dt>源码仓库</dt><dd><a href="{{.}}" target="_blank" rel="noopener">访问 ↗</a></dd></div>{{end}}
+        <div><dt>发布于</dt><dd>{{date .App.PublishedAt}}</dd></div>
+      </dl>
+      {{if .App.Tags}}<div class="tag-row">{{range .App.Tags}}<span class="chip">#{{.Name}}</span>{{end}}</div>{{end}}
+    </section>
+  </aside>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{.App.Name}}",
+  "description": "{{.App.Tagline}}",
+  "operatingSystem": "{{join .App.Platforms ", "}}",
+  "applicationCategory": "UtilitiesApplication",
+  {{if .Release}}"softwareVersion": "{{.Release.Version}}",{{end}}
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CNY"},
+  "url": "{{.Canonical}}"
+}
+</script>
+{{end}}

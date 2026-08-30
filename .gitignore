@@ -1,0 +1,13 @@
+/bin/
+/data/
+/.tools/
+/web/admin/node_modules/
+/web/admin/dist/
+*.tsbuildinfo
+*.log
+.env
+.env.*
+/.pico-*/
+*.db
+*.db-*
+*.pem

@@ -1,0 +1,9 @@
+.git
+.tools
+bin
+data
+data-test
+web/admin/node_modules
+web/admin/dist
+*.log
+

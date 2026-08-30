@@ -1,0 +1,9 @@
+{
+  "name": "netupdown-admin",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {"dev": "vite", "build": "vue-tsc -b && vite build"},
+  "dependencies": {"@vicons/ionicons5": "^0.13.0", "axios": "^1.12.0", "naive-ui": "^2.43.1", "pinia": "^3.0.3", "vue": "^3.5.22", "vue-router": "^4.6.3"},
+  "devDependencies": {"@vitejs/plugin-vue": "^6.0.1", "typescript": "^5.9.3", "vite": "^7.1.12", "vue-tsc": "^3.1.1"}
+}

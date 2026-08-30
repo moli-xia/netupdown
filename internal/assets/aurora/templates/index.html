@@ -1,0 +1,56 @@
+{{define "content"}}
+{{if .Featured}}
+<section class="block">
+  <div class="container">
+    <div class="block-head">
+      <div><span class="block-kicker">FEATURED PRODUCTS</span><h2>重点产品</h2></div>
+      <a class="block-more" href="/apps">查看全部 →</a>
+    </div>
+    <div class="featured-grid">{{range .Featured}}{{template "app-card" .}}{{end}}</div>
+  </div>
+</section>
+{{end}}
+
+<section class="block">
+  <div class="container">
+    <div class="block-head">
+      <div><span class="block-kicker">LATEST RELEASES</span><h2>最近更新</h2></div>
+      <a class="block-more" href="/apps">进入产品中心 →</a>
+    </div>
+    {{if .Latest}}
+    <div class="card-list">{{range .Latest}}{{template "app-card" .}}{{end}}</div>
+    {{else}}
+    <div class="empty">
+      <p>还没有已发布的产品</p>
+      <span>登录管理后台，创建并发布第一款产品吧。</span>
+    </div>
+    {{end}}
+  </div>
+</section>
+
+{{if .Categories}}
+<section class="block">
+  <div class="container">
+    <div class="block-head"><div><span class="block-kicker">PRODUCT LINES</span><h2>产品系列</h2></div></div>
+    <div class="cat-links">
+      {{range .Categories}}<a href="/categories/{{.Slug}}"><span><strong>{{.Name}}</strong>{{with .Description}}<small>{{.}}</small>{{end}}</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a>{{end}}
+    </div>
+  </div>
+</section>
+{{end}}
+
+{{if ne (printf "%v" .Theme.Config.show_dev_band) "false"}}
+<section class="block">
+  <div class="container">
+    <div class="dev-band">
+      <div class="dev-band-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg></div>
+      <div class="dev-band-text">
+        <h3>每一次更新，都清晰可追踪</h3>
+        <p>版本记录、更新说明、文件校验与多平台安装包集中呈现，随时获取可靠的最新版本。</p>
+      </div>
+      <a class="btn btn-primary" href="/apps?sort=latest">查看全部产品</a>
+    </div>
+  </div>
+</section>
+{{end}}
+{{end}}

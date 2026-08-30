@@ -1,0 +1,16 @@
+{{define "content"}}
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span>/</span><b>{{.Doc.Title}}</b></nav>
+    <div class="page-head-row">
+      <h1>{{.Doc.Title}}</h1>
+      <span class="page-count">更新于 {{date .Doc.UpdatedAt}}</span>
+    </div>
+  </div>
+</section>
+<section class="section-list">
+  <article class="container container-narrow panel doc-panel">
+    <div class="prose">{{markdown .Doc.Content}}</div>
+  </article>
+</section>
+{{end}}

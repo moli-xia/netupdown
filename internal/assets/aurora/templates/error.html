@@ -1,0 +1,16 @@
+{{define "content"}}
+<section class="container error-box">
+  <div class="error-code">{{.Status}}</div>
+  <h1>{{.Message}}</h1>
+  <p class="muted">页面可能已被移动或下架。试试搜索，或者回到首页逛逛。</p>
+  <form class="search" action="/search" role="search">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+    <input type="search" name="q" placeholder="搜索产品…" aria-label="搜索产品">
+    <button class="btn btn-primary btn-sm" type="submit">搜索</button>
+  </form>
+  <div class="error-actions">
+    <a class="btn btn-primary" href="/">返回首页</a>
+    <a class="btn" href="/apps">浏览产品中心</a>
+  </div>
+</section>
+{{end}}

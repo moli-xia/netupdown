@@ -1,0 +1,64 @@
+{{define "content"}}
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="面包屑"><a href="/">首页</a><span>/</span><a href="/apps">产品中心</a>{{if .CategoryName}}<span>/</span><b>{{.CategoryName}}</b>{{end}}</nav>
+    <div class="page-head-row">
+      <h1>{{.Title}}</h1>
+      <span class="page-count">共 <b>{{.Total}}</b> 款</span>
+    </div>
+  </div>
+</section>
+
+<section class="section-list">
+  <div class="container">
+    <div class="cat-tabs" role="navigation" aria-label="分类筛选">
+      <a class="cat-tab{{if not .Cat}} active{{end}}" href="/apps">全部</a>
+      {{range .Categories}}<a class="cat-tab{{if eq $.Cat .Slug}} active{{end}}" href="/categories/{{.Slug}}">{{.Name}}</a>{{end}}
+    </div>
+
+    <form class="toolbar" method="get" action="">
+      <div class="toolbar-search">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+        <input type="search" name="q" value="{{.Query}}" placeholder="在结果中搜索…" aria-label="搜索">
+      </div>
+      <label class="toolbar-field"><span>平台</span>
+        <select name="platform" data-autosubmit>
+          <option value="">全部</option>
+          <option value="windows" {{if eq .Platform "windows"}}selected{{end}}>Windows</option>
+          <option value="macos" {{if eq .Platform "macos"}}selected{{end}}>macOS</option>
+          <option value="linux" {{if eq .Platform "linux"}}selected{{end}}>Linux</option>
+          <option value="android" {{if eq .Platform "android"}}selected{{end}}>Android</option>
+          <option value="ios" {{if eq .Platform "ios"}}selected{{end}}>iOS</option>
+          <option value="web" {{if eq .Platform "web"}}selected{{end}}>Web</option>
+        </select>
+      </label>
+      <label class="toolbar-field"><span>排序</span>
+        <select name="sort" data-autosubmit>
+          <option value="latest" {{if eq .Sort "latest"}}selected{{end}}>最新发布</option>
+          <option value="hot" {{if eq .Sort "hot"}}selected{{end}}>下载最多</option>
+          <option value="name" {{if eq .Sort "name"}}selected{{end}}>名称</option>
+        </select>
+      </label>
+      <button class="btn btn-sm" type="submit">筛选</button>
+    </form>
+
+    {{if .Apps}}
+    <div class="card-list">{{range .Apps}}{{template "app-card" .}}{{end}}</div>
+    {{else}}
+    <div class="empty">
+      <p>没有找到匹配的应用</p>
+      <span>换个关键词，或者清除筛选条件再试试。</span>
+      <a class="btn btn-sm" href="/apps">清除筛选</a>
+    </div>
+    {{end}}
+
+    {{if gt .TotalPages 1}}
+    <nav class="pagination" aria-label="分页">
+      {{if .HasPrev}}<a class="page-btn" href="{{.PrevURL}}" rel="prev" aria-label="上一页">←</a>{{else}}<span class="page-btn disabled" aria-hidden="true">←</span>{{end}}
+      {{range .Pages}}{{if .Current}}<span class="page-btn current" aria-current="page">{{.N}}</span>{{else}}<a class="page-btn" href="{{.URL}}">{{.N}}</a>{{end}}{{end}}
+      {{if .HasNext}}<a class="page-btn" href="{{.NextURL}}" rel="next" aria-label="下一页">→</a>{{else}}<span class="page-btn disabled" aria-hidden="true">→</span>{{end}}
+    </nav>
+    {{end}}
+  </div>
+</section>
+{{end}}

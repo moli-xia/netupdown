@@ -1,0 +1,12 @@
+services:
+  netupdown:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      NETUPDOWN_MASTER_KEY: ${NETUPDOWN_MASTER_KEY:-}
+    volumes:
+      - ./data:/app/data
+      - ./config.yaml:/app/config.yaml:ro
+

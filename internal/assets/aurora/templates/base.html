@@ -1,0 +1,107 @@
+{{define "base"}}<!doctype html>
+<html lang="zh-CN">
+<head>
+<script>(function(){try{var t=localStorage.getItem('nud-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}})()</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{.PageTitle}}</title>
+<meta name="description" content="{{.Description}}">
+{{with .Site.Keywords}}<meta name="keywords" content="{{.}}">{{end}}
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme:light)">
+<meta name="theme-color" content="#0b0e13" media="(prefers-color-scheme:dark)">
+<link rel="canonical" href="{{.Canonical}}">
+<meta property="og:site_name" content="{{.Site.Title}}">
+<meta property="og:title" content="{{.PageTitle}}">
+<meta property="og:description" content="{{.Description}}">
+<meta property="og:url" content="{{.Canonical}}">
+<meta property="og:type" content="website">
+{{with .OGImage}}<meta property="og:image" content="{{.}}"><meta name="twitter:card" content="summary">{{end}}
+{{if .Site.Favicon}}<link rel="icon" href="{{.Site.Favicon}}">{{else}}<link rel="icon" type="image/svg+xml" href="{{asset "img/favicon.svg"}}?v=3.2.1">{{end}}
+<link rel="alternate" type="application/rss+xml" title="{{.Site.Title}}" href="/feed.xml">
+<link rel="stylesheet" href="{{asset "css/main.css"}}?v=3.2.1">
+{{with .Theme.Config.accent}}<style>:root{--brand:{{.}}}</style>{{end}}
+{{.Site.HeadInject}}
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主要内容</a>
+<header class="topbar">
+  <nav class="container nav" aria-label="主导航">
+    <button class="nav-burger" type="button" aria-label="打开菜单" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="brand" href="/">
+      {{if .Site.Logo}}<img class="brand-logo" src="{{.Site.Logo}}" alt="{{.Site.Title}}">{{else}}<span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17V7m0 0L3.5 10.5M7 7l3.5 3.5M17 7v10m0 0 3.5-3.5M17 17l-3.5-3.5"/></svg></span>{{end}}
+      <span class="brand-name">{{.Site.Title}}</span>
+    </a>
+    <div class="nav-links">
+      <a href="/" data-nav>首页</a>
+      <a href="/apps" data-nav>产品中心</a>
+      <a href="/apps?sort=hot" data-nav>热门产品</a>
+    </div>
+    <div class="nav-spacer"></div>
+    <form class="nav-search" action="/search" role="search">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+      <input type="search" name="q" placeholder="搜索产品" aria-label="搜索产品" data-search>
+      <kbd>/</kbd>
+    </form>
+    <button class="icon-btn theme-btn" type="button" onclick="nudTheme()" aria-label="切换亮暗主题" title="亮暗主题：跟随系统 / 浅色 / 深色">
+      <svg class="ti ti-auto" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.2"/><path d="M12 3.8v16.4A8.2 8.2 0 0 0 12 3.8z" fill="currentColor" stroke="none"/></svg>
+      <svg class="ti ti-light" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.4"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M4.8 4.8l1.7 1.7M17.5 17.5l1.7 1.7M4.8 19.2l1.7-1.7M17.5 6.5l1.7-1.7"/></svg>
+      <svg class="ti ti-dark" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z"/></svg>
+    </button>
+  </nav>
+  <div class="nav-drawer">
+    <a href="/" data-nav>首页</a>
+    <a href="/apps" data-nav>产品中心</a>
+    <a href="/apps?sort=hot" data-nav>热门产品</a>
+    <form action="/search" role="search"><input type="search" name="q" placeholder="搜索产品…" aria-label="搜索产品"></form>
+  </div>
+</header>
+<main id="main">{{template "content" .}}</main>
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <strong>{{.Site.Title}}</strong>
+      <p>{{.Site.Subtitle}}</p>
+      {{with .Site.Footer}}<div class="footer-custom">{{.}}</div>{{end}}
+    </div>
+    <nav class="footer-col" aria-label="浏览">
+      <h4>浏览</h4>
+      <a href="/apps">全部产品</a>
+      <a href="/apps?sort=latest">最近更新</a>
+      <a href="/apps?sort=hot">热门产品</a>
+    </nav>
+    <nav class="footer-col" aria-label="订阅与工具">
+      <h4>订阅与工具</h4>
+      <a href="/feed.xml">RSS 订阅</a>
+      <a href="/sitemap.xml">站点地图</a>
+      <a href="/admin/" rel="nofollow">管理后台</a>
+    </nav>
+  </div>
+  <div class="container footer-bottom">
+    <span>© {{.Year}} {{.Site.Title}} · Powered by <a href="https://netupdown.com" rel="noopener">造物工坊</a></span>
+    {{with .Site.ICP}}<a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener nofollow">{{.}}</a>{{end}}
+  </div>
+</footer>
+<script src="{{asset "js/main.js"}}?v=3.2.1" defer></script>
+{{.Site.FootInject}}
+</body>
+</html>{{end}}
+
+{{define "app-card"}}<a class="app-item" href="/apps/{{.Slug}}">
+  {{if .Icon}}<img class="app-icon" src="{{.Icon}}" alt="" loading="lazy" width="44" height="44">{{else}}<span class="app-icon">{{initial .Name}}</span>{{end}}
+  <div class="app-item-body">
+    <div class="app-item-title">
+      <h3>{{.Name}}</h3>
+      {{if eq .Type 1}}<span class="badge badge-self">官方</span>{{end}}
+      {{with .Category}}<span class="badge">{{.Name}}</span>{{end}}
+    </div>
+    <p class="app-item-desc">{{if .Tagline}}{{.Tagline}}{{else}}暂无简介{{end}}</p>
+    <div class="app-item-meta">
+      {{if .Platforms}}<span class="plats">{{range .Platforms}}{{osIcon .}}{{end}}</span>{{end}}
+      <span class="dl"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0 4.5-4.5M12 15l-4.5-4.5M4.5 19.5h15"/></svg>{{numFmt .DownloadCount}}</span>
+      {{with .PublishedAt}}<span>{{date .}}</span>{{end}}
+    </div>
+  </div>
+  <span class="app-item-go" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+</a>{{end}}

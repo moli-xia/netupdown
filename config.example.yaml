@@ -1,0 +1,25 @@
+server:
+  addr: ":8080"
+  base_url: "http://localhost:8080"
+  behind_proxy: false
+  admin_path: "/admin"
+database:
+  driver: "sqlite"
+  dsn: "data/netupdown.db"
+data_dir: "data"
+log:
+  level: "info"
+  file: "data/logs/app.log"
+  max_size_mb: 50
+  max_backups: 5
+upload:
+  max_size_mb: 4096
+  chunk_size_mb: 5
+  image_max_size_mb: 10
+ratelimit:
+  public_per_min: 60
+  login_per_min: 5
+theme:
+  dev: false
+timezone: "Asia/Shanghai"
+

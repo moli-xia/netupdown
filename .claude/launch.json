@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "netupdown",
+      "runtimeExecutable": "bin/netupdown.exe",
+      "runtimeArgs": ["serve"],
+      "port": 8080
+    }
+  ]
+}
